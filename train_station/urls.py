@@ -26,8 +26,8 @@ from train_station import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/station/", include("station.urls"), namespace="station"),
-    path("api/user/", include("user.urls"), namespace="user"),
+    path("api/station/", include("station.urls"), name="station"),
+    path("api/user/", include("user.urls"), name="user"),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/doc/swagger/",
