@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import UniqueConstraint
+from rest_framework.exceptions import ValidationError
 
 from train_station import settings
 
@@ -83,6 +84,22 @@ class Ticket(models.Model):
         constraints = [
             UniqueConstraint(fields=["journey", "seat"], name="unique_ticket_seat_journey")
         ]
+
+    def clean(self):
+        if not (1 <= self.seat <= self.journey.train.places_in_cargo):
+            raise ValidationError({
+                "seat": f"Seat must be in range [1, {self.journey.train.places_in_cargo}], not {self.seat}"
+            })
+
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None
+    ):
+        self.full_clean()
+        return super(Ticket, self).save(force_insert, force_update, using, update_fields)
 
     def __str__(self):
         return f"cargo: {self.cargo}, seat: {self.seat}"
