@@ -59,6 +59,11 @@ class Route(models.Model):
     destination = models.ForeignKey(Station, on_delete=models.CASCADE, related_name="destination_routes")
     distance = models.IntegerField()
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["source", "destination"])
+        ]
+
     def __str__(self):
         return f"{self.source} -> {self.destination}: {self.distance}"
 
@@ -69,6 +74,11 @@ class Journey(models.Model):
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField()
     crew = models.ManyToManyField(Crew, related_name="journeys")
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["departure_time", "arrival_time"])
+        ]
 
     def __str__(self):
         return f"Journey {self.route.destination.name} by {self.train.name}"
