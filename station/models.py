@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import UniqueConstraint
 
 from train_station import settings
 
@@ -77,6 +78,11 @@ class Ticket(models.Model):
     seat = models.IntegerField()
     journey = models.ForeignKey(Journey, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=["journey", "seat"], name="unique_ticket_seat_journey")
+        ]
 
     def __str__(self):
         return f"cargo: {self.cargo}, seat: {self.seat}"
