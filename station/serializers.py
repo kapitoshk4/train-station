@@ -12,7 +12,7 @@ class StationSerializer(serializers.ModelSerializer):
 class CrewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crew
-        fields = ("id", "first_name", "last_name",)
+        fields = ("id", "first_name", "last_name", "full_name")
 
 
 class TrainSerializer(serializers.ModelSerializer):
@@ -48,8 +48,9 @@ class JourneySerializer(serializers.ModelSerializer):
 
 
 class JourneyListSerializer(serializers.ModelSerializer):
+    route = serializers.CharField(source="route.route", read_only=True)
     train_name = serializers.CharField(source="train.name", read_only=True)
-    train_num_cargo = serializers.CharField(source="train.num_cargo", read_only=True)
+    train_num_cargo = serializers.CharField(source="train.cargo_num", read_only=True)
     crew = serializers.SlugRelatedField(
         many=True,
         read_only=True,
@@ -63,8 +64,8 @@ class JourneyListSerializer(serializers.ModelSerializer):
 
 class JourneyRetrieveSerializer(JourneySerializer):
     train = TrainSerializer(read_only=True)
-    route = RouteSerializer(read_only=True)
-    crew = CrewSerializer(read_only=True)
+    route = RouteRetrieveSerializer(read_only=True)
+    crew = CrewSerializer(read_only=True, many=True)
 
 
 class TrainTypeSerializer(serializers.ModelSerializer):
