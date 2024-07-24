@@ -64,6 +64,10 @@ class Route(models.Model):
             models.Index(fields=["source", "destination"])
         ]
 
+    @property
+    def route(self):
+        return f"{self.source} -> {self.destination}"
+
     def __str__(self):
         return f"{self.source} -> {self.destination}: {self.distance}"
 
