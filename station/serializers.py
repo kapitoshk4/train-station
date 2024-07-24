@@ -86,13 +86,13 @@ class JourneyRetrieveSerializer(JourneySerializer):
     crew = CrewSerializer(read_only=True, many=True)
 
 
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = ("id", "created_at", "user",)
-
-
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = ("id", "cargo", "seat", "journey", "order")
+        fields = ("id", "cargo", "seat", "journey",)
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ("id", "created_at", "tickets")
