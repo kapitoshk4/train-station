@@ -92,6 +92,15 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = ("id", "cargo", "seat", "journey",)
 
+    def validate(self, attrs):
+        Ticket.validate_ticket(
+            attrs["seat"],
+            attrs["journey"].train.places_in_cargo,
+            attrs["cargo"],
+            attrs["journey"].train.cargo_num
+        )
+        return attrs
+
 
 class OrderSerializer(serializers.ModelSerializer):
     tickets = TicketSerializer(many=True, read_only=False, allow_empty=False)
