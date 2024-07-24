@@ -99,11 +99,26 @@ class Ticket(models.Model):
             UniqueConstraint(fields=["cargo", "seat", "journey"], name="unique_ticket")
         ]
 
+    @staticmethod
+    def validate_ticket(seat: int, places_in_cargo: int, cargo: int, cargo_num: int):
+        if not (1 <= seat <= places_in_cargo):
+            raise ValidationError(
+                {
+                    "seat": f"Seat must be in range [1, {places_in_cargo}], not {seat}"
+                }
+            )
+        if not (1 <= cargo <= cargo_num):
+            raise ValidationError(
+                {
+                    "cargo": f"Cargo must be in range [1, {cargo_num}], not {cargo}"
+                }
+            )
+
     def clean(self):
-        if not (1 <= self.seat <= self.journey.train.places_in_cargo):
-            raise ValidationError({
-                "seat": f"Seat must be in range [1, {self.journey.train.places_in_cargo}], not {self.seat}"
-            })
+        Ticket.validate_ticket(self.seat,
+                               self.journey.train.places_in_cargo,
+                               self.cargo,
+                               self.journey.train.places_in_cargo)
 
     def save(
         self,
