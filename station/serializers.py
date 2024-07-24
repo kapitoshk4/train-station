@@ -15,10 +15,28 @@ class CrewSerializer(serializers.ModelSerializer):
         fields = ("id", "first_name", "last_name", "full_name")
 
 
+class TrainTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TrainType
+        fields = ("id", "name",)
+
+
 class TrainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Train
         fields = ("id", "name", "cargo_num", "places_in_cargo", "train_type",)
+
+
+class TrainListSerializer(serializers.ModelSerializer):
+    train_type = serializers.CharField(source="train_type.name", read_only=True)
+
+    class Meta:
+        model = Train
+        fields = ("id", "name", "cargo_num", "places_in_cargo", "train_type",)
+
+
+class TrainRetrieveSerializer(TrainSerializer):
+    train_type = TrainTypeSerializer(read_only=True)
 
 
 class RouteSerializer(serializers.ModelSerializer):
@@ -63,15 +81,9 @@ class JourneyListSerializer(serializers.ModelSerializer):
 
 
 class JourneyRetrieveSerializer(JourneySerializer):
-    train = TrainSerializer(read_only=True)
+    train = TrainRetrieveSerializer(read_only=True)
     route = RouteRetrieveSerializer(read_only=True)
     crew = CrewSerializer(read_only=True, many=True)
-
-
-class TrainTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TrainType
-        fields = ("id", "name",)
 
 
 class OrderSerializer(serializers.ModelSerializer):
