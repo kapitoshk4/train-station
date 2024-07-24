@@ -15,10 +15,10 @@ class CrewSerializer(serializers.ModelSerializer):
         fields = ("id", "first_name", "last_name",)
 
 
-class JourneySerializer(serializers.ModelSerializer):
+class TrainSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Journey
-        fields = ("id", "route", "train", "departure_time", "arrival_time", "crew",)
+        model = Train
+        fields = ("id", "name", "cargo_num", "places_in_cargo", "train_type",)
 
 
 class RouteSerializer(serializers.ModelSerializer):
@@ -27,10 +27,30 @@ class RouteSerializer(serializers.ModelSerializer):
         fields = ("id", "source", "destination", "distance",)
 
 
-class TrainSerializer(serializers.ModelSerializer):
+class JourneySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Train
-        fields = ("id", "name", "cargo_num", "places_in_cargo", "train_type",)
+        model = Journey
+        fields = ("id", "route", "train", "departure_time", "arrival_time", "crew",)
+
+
+class JourneyListSerializer(serializers.ModelSerializer):
+    train_name = serializers.CharField(source="train.name", read_only=True)
+    train_num_cargo = serializers.CharField(source="train.num_cargo", read_only=True)
+    crew = serializers.SlugRelatedField(
+        many=True,
+        read_only=True,
+        slug_field="full_name"
+    )
+
+    class Meta:
+        model = Journey
+        fields = ("id", "route", "train_name", "train_num_cargo", "departure_time", "arrival_time", "crew",)
+
+
+class JourneyRetrieveSerializer(JourneySerializer):
+    train = TrainSerializer(read_only=True)
+    route = RouteSerializer(read_only=True)
+    crew = CrewSerializer(read_only=True)
 
 
 class TrainTypeSerializer(serializers.ModelSerializer):
