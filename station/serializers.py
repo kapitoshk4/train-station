@@ -147,3 +147,15 @@ class OrderSerializer(serializers.ModelSerializer):
                 Ticket.objects.create(order=order, **ticket_data)
 
             return order
+
+
+class TicketListSerializer(TicketSerializer):
+    journey = JourneyListSerializer(read_only=True)
+
+
+class OrderListSerializer(OrderSerializer):
+    tickets = TicketListSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Order
+        fields = ("id", "created_at", "tickets")
