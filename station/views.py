@@ -1,3 +1,4 @@
+from django.db.models import Count, F
 from rest_framework import viewsets
 
 from station.models import (
@@ -10,10 +11,22 @@ from station.models import (
     Route,
     TrainType
 )
-from station.serializers import CrewSerializer, StationSerializer, TrainSerializer, TrainTypeSerializer, \
-    OrderSerializer, JourneySerializer, TicketSerializer, RouteSerializer, JourneyListSerializer, \
-    JourneyRetrieveSerializer, RouteListSerializer, RouteRetrieveSerializer, TrainListSerializer, \
+from station.serializers import (
+    CrewSerializer,
+    StationSerializer,
+    TrainSerializer,
+    TrainTypeSerializer,
+    OrderSerializer,
+    JourneySerializer,
+    TicketSerializer,
+    RouteSerializer,
+    JourneyListSerializer,
+    JourneyRetrieveSerializer,
+    RouteListSerializer,
+    RouteRetrieveSerializer,
+    TrainListSerializer,
     TrainRetrieveSerializer
+)
 
 
 class CrewViewSet(viewsets.ModelViewSet):
@@ -86,8 +99,25 @@ class JourneyViewSet(viewsets.ModelViewSet):
             crews = self._params_to_int(crews)
             queryset = queryset.filter(crew__id__in=crews)
 
-        if self.action in ("list", "retrieve"):
-            return queryset.select_related("route", "train").prefetch_related("crew")
+        if self.action == "list":
+            queryset = (
+                queryset
+                .select_related("route", "train")
+                .prefetch_related("crew")
+                .annotate(
+                    tickets_available=(
+                            F("train__places_in_cargo")
+                            * F("train__cargo_num")
+                            - Count("tickets")
+                    )
+                )
+            ).order_by("id")
+        if self.action == "retrieve":
+            return (
+                queryset
+                .select_related("route", "train")
+                .prefetch_related("crew")
+            )
 
         return queryset.distinct()
 
@@ -111,6 +141,9 @@ class RouteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = self.queryset
         if self.action in ("list", "retrieve"):
-            return queryset.select_related("source", "destination")
+            return (
+                queryset
+                .select_related("source", "destination")
+            )
 
         return queryset
