@@ -92,6 +92,21 @@ class JourneyRetrieveSerializer(JourneySerializer):
     train = TrainRetrieveSerializer(read_only=True)
     route = RouteRetrieveSerializer(read_only=True)
     crew = CrewSerializer(read_only=True, many=True)
+    taken_seats = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Journey
+        fields = ("id", "route", "train", "departure_time", "arrival_time", "crew", "taken_seats",)
+
+    def get_taken_seats(self, obj):
+        tickets = Ticket.objects.filter(journey=obj).values_list("cargo", "seat")
+        taken_seats = {}
+        for cargo, seat in tickets:
+            if cargo not in taken_seats:
+                taken_seats[cargo] = []
+            taken_seats[cargo].append(seat)
+
+        return taken_seats
 
 
 class TicketSerializer(serializers.ModelSerializer):
