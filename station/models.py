@@ -64,6 +64,21 @@ class Route(models.Model):
             models.Index(fields=["source", "destination"])
         ]
 
+    @staticmethod
+    def validate_route(source: str, destination: str):
+        if not (source != destination):
+            raise ValidationError(
+                {
+                    "source": "The source and destination cannot be the same"
+                }
+            )
+
+    def clean(self):
+        Route.validate_route(
+            self.source.name,
+            self.destination.name
+        )
+
     @property
     def route(self):
         return f"{self.source} -> {self.destination}"
