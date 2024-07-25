@@ -39,6 +39,7 @@ class TrainViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
+
         if self.action in ("list", "retrieve"):
             return queryset.select_related("train_type")
 
@@ -64,6 +65,10 @@ class OrderViewSet(viewsets.ModelViewSet):
 class JourneyViewSet(viewsets.ModelViewSet):
     queryset = Journey.objects.all()
 
+    @staticmethod
+    def _params_to_int(query_string):
+        return [int(str_id) for str_id in query_string.split(",")]
+
     def get_serializer_class(self):
         if self.action == "list":
             return JourneyListSerializer
@@ -74,8 +79,17 @@ class JourneyViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
+
+        crews = self.request.query_params.get("crews")
+
+        if crews:
+            crews = self._params_to_int(crews)
+            queryset = queryset.filter(crew__id__in=crews)
+
         if self.action in ("list", "retrieve"):
             return queryset.select_related("route", "train").prefetch_related("crew")
+
+        return queryset.distinct()
 
 
 class TicketViewSet(viewsets.ModelViewSet):
