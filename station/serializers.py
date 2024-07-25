@@ -82,10 +82,18 @@ class JourneyListSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field="full_name"
     )
+    tickets_available = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Journey
-        fields = ("id", "route", "train_name", "train_num_cargo", "departure_time", "arrival_time", "crew",)
+        fields = ("id",
+                  "route",
+                  "train_name",
+                  "train_num_cargo",
+                  "departure_time",
+                  "arrival_time",
+                  "crew",
+                  "tickets_available")
 
 
 class JourneyRetrieveSerializer(JourneySerializer):
