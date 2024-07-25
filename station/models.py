@@ -113,6 +113,7 @@ class Ticket(models.Model):
         constraints = [
             UniqueConstraint(fields=["cargo", "seat", "journey"], name="unique_ticket")
         ]
+        ordering = ["cargo", "seat"]
 
     @staticmethod
     def validate_ticket(seat: int, places_in_cargo: int, cargo: int, cargo_num: int):
