@@ -18,7 +18,7 @@ class Crew(models.Model):
 
 
 class Station(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, unique=True)
     latitude = models.DecimalField(max_digits=9, decimal_places=2)
     longitude = models.DecimalField(max_digits=9, decimal_places=2)
 
@@ -38,7 +38,7 @@ class Order(models.Model):
 
 
 class TrainType(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, unique=True)
 
     def __str__(self):
         return self.name
