@@ -1,6 +1,7 @@
 from django.db.models import Count, F
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from station.models import (
     Crew,
@@ -12,6 +13,7 @@ from station.models import (
     Route,
     TrainType
 )
+from station.permissions import IsAdminAllOrAuthenticatedReadOnly
 from station.serializers import (
     CrewSerializer,
     StationSerializer,
@@ -26,13 +28,16 @@ from station.serializers import (
     RouteListSerializer,
     RouteRetrieveSerializer,
     TrainListSerializer,
-    TrainRetrieveSerializer, OrderListSerializer
+    TrainRetrieveSerializer,
+    OrderListSerializer
 )
 
 
 class CrewViewSet(viewsets.ModelViewSet):
     queryset = Crew.objects.all()
     serializer_class = CrewSerializer
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAdminAllOrAuthenticatedReadOnly,)
 
 
 class StationViewSet(viewsets.ModelViewSet):
