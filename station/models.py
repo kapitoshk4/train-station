@@ -1,5 +1,9 @@
+import os
+import uuid
+
 from django.db import models
 from django.db.models import UniqueConstraint
+from django.utils.text import slugify
 from rest_framework.exceptions import ValidationError
 
 from train_station import settings
@@ -44,11 +48,20 @@ class TrainType(models.Model):
         return self.name
 
 
+def train_image_path(instance, filename):
+    _, extension = os.path.splitext(filename)
+    return os.path.join(
+        f"uploads/train/",
+        f"{slugify(instance.name)}-{uuid.uuid4()}.{extension}"
+    )
+
+
 class Train(models.Model):
     name = models.CharField(max_length=60)
     cargo_num = models.IntegerField()
     places_in_cargo = models.IntegerField()
     train_type = models.ForeignKey(TrainType, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=train_image_path, blank=True)
 
     def __str__(self):
         return self.name
