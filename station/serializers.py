@@ -28,6 +28,12 @@ class TrainSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "cargo_num", "places_in_cargo", "train_type",)
 
 
+class TrainImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Train
+        fields = ("id", "image",)
+
+
 class TrainListSerializer(serializers.ModelSerializer):
     train_type = serializers.CharField(source="train_type.name", read_only=True)
 
