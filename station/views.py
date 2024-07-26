@@ -1,7 +1,9 @@
 from django.db.models import Count, F
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from station.models import (
     Crew,
@@ -28,7 +30,7 @@ from station.serializers import (
     RouteRetrieveSerializer,
     TrainListSerializer,
     TrainRetrieveSerializer,
-    OrderListSerializer
+    OrderListSerializer, TrainImageSerializer
 )
 
 
@@ -52,6 +54,8 @@ class TrainViewSet(viewsets.ModelViewSet):
             serializer_class = TrainListSerializer
         if self.action == "retrieve":
             serializer_class = TrainRetrieveSerializer
+        if self.action == "upload_image":
+            serializer_class = TrainImageSerializer
 
         return serializer_class
 
@@ -62,6 +66,20 @@ class TrainViewSet(viewsets.ModelViewSet):
             queryset = queryset.select_related("train_type")
 
         return queryset
+
+    @action(
+        methods=["POST"],
+        detail=True,
+        url_path="upload-image"
+    )
+    def upload_image(self, request, pk=None):
+        train = self.get_object()
+        serializer = self.get_serializer(train, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TrainTypeViewSet(viewsets.ModelViewSet):
