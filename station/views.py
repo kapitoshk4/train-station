@@ -1,4 +1,5 @@
 from django.db.models import Count, F
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
@@ -61,6 +62,10 @@ class TrainViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
+        train_type = self.request.query_params.get("train_type")
+
+        if train_type:
+            queryset = queryset.filter(train_type__name=train_type)
 
         if self.action in ("list", "retrieve"):
             queryset = queryset.select_related("train_type")
@@ -186,6 +191,15 @@ class RouteViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
+        source = self.request.query_params.get("source")
+        destination = self.request.query_params.get("destination")
+
+        if source:
+            queryset = queryset.filter(source__name=source)
+
+        if destination:
+            queryset = queryset.filter(destination__name=destination)
+
         if self.action in ("list", "retrieve"):
             queryset = (
                 queryset
