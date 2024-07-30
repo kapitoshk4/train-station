@@ -51,13 +51,61 @@ class CrewViewSet(viewsets.ModelViewSet):
 
     @extend_schema(summary="Create a new crew member", description="Creates a new crew member.")
     def create(self, request, *args, **kwargs):
-        """Create a new crew member"""
+        """Create a new crew member."""
         return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(summary="Update a crew member", description="Updates an existing crew member with the provided data.")
+    def update(self, request, *args, **kwargs):
+        """Update a crew member."""
+        return super().update(request, *args, **kwargs)
+
+    @extend_schema(summary="Partial update of a crew member",
+                   description="Partially updates an existing crew member with the provided data.")
+    def partial_update(self, request, *args, **kwargs):
+        """Partial update of a crew member."""
+        return super().partial_update(request, *args, **kwargs)
+
+    @extend_schema(summary="Delete a crew member", description="Deletes an existing crew member by ID.")
+    def destroy(self, request, *args, **kwargs):
+        """Delete a crew member."""
+        return super().destroy(request, *args, **kwargs)
 
 
 class StationViewSet(viewsets.ModelViewSet):
     queryset = Station.objects.all()
     serializer_class = StationSerializer
+
+    @extend_schema(summary="Get list of stations", description="Returns a list of all stations.")
+    def list(self, request, *args, **kwargs):
+        """Get list of stations."""
+        return super().list(request, *args, **kwargs)
+
+    @extend_schema(summary="Retrieve a station", description="Returns a details of a station by ID.")
+    def retrieve(self, request, *args, **kwargs):
+        """Get station."""
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(summary="Create a new station", description="Creates a new station.")
+    def create(self, request, *args, **kwargs):
+        """Create a new station."""
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(summary="Update a station",
+                   description="Updates an existing station with the provided data.")
+    def update(self, request, *args, **kwargs):
+        """Update a station."""
+        return super().update(request, *args, **kwargs)
+
+    @extend_schema(summary="Partial update of a station",
+                   description="Partially updates an existing station with the provided data.")
+    def partial_update(self, request, *args, **kwargs):
+        """Partial update of a station."""
+        return super().partial_update(request, *args, **kwargs)
+
+    @extend_schema(summary="Delete a station", description="Deletes an existing station by ID.")
+    def destroy(self, request, *args, **kwargs):
+        """Delete a station."""
+        return super().destroy(request, *args, **kwargs)
 
 
 class TrainViewSet(viewsets.ModelViewSet):
