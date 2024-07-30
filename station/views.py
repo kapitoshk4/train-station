@@ -1,5 +1,5 @@
 from django.db.models import Count, F
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
@@ -38,6 +38,21 @@ from station.serializers import (
 class CrewViewSet(viewsets.ModelViewSet):
     queryset = Crew.objects.all()
     serializer_class = CrewSerializer
+
+    @extend_schema(summary="Get list of crews", description="Returns a list of all crew members.")
+    def list(self, request, *args, **kwargs):
+        """Get list of crews."""
+        return super().list(request, *args, **kwargs)
+
+    @extend_schema(summary="Retrieve a crew member", description="Returns a details of a single crew member by ID.")
+    def retrieve(self, request, *args, **kwargs):
+        """Get member of crew."""
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(summary="Create a new crew member", description="Creates a new crew member.")
+    def create(self, request, *args, **kwargs):
+        """Create a new crew member"""
+        return super().retrieve(request, *args, **kwargs)
 
 
 class StationViewSet(viewsets.ModelViewSet):
