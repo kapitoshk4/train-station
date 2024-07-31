@@ -393,6 +393,13 @@ class JourneyViewSet(viewsets.ModelViewSet):
         return queryset.distinct()
 
     @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "crews",
+                type={"array": "list", "items": {"type": "number"}},
+                description="Filter by crews (ex. ?crews=1,2)"
+            )
+        ],
         summary="Get list of journeys",
         description="Returns list of all journeys."
     )
