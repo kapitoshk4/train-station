@@ -392,6 +392,49 @@ class JourneyViewSet(viewsets.ModelViewSet):
 
         return queryset.distinct()
 
+    @extend_schema(
+        summary="Get list of journeys",
+        description="Returns list of all journeys."
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Retrieve journey details",
+        description="Returns details of a journey by ID."
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(self, request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Create a new journey",
+        description="Creates a new journey."
+    )
+    def create(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Update a journey",
+        description="Update a journey by ID."
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(self, request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Partial update of a journey",
+        description="Partially updates an existing journey"
+                    "with the provided data."
+    )
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Delete a journey",
+        description="Deletes an existing journey by ID."
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
+
 
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
