@@ -301,6 +301,49 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         return serializer_class
 
+    @extend_schema(
+        summary="Get list of orders",
+        description="Returns list of all orders."
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Retrieve order details",
+        description="Returns details of a order by ID."
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(self, request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Create a new order",
+        description="Creates a new order."
+    )
+    def create(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Update a order",
+        description="Update a order by ID."
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(self, request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Partial update of a order",
+        description="Partially updates an existing order"
+                    "with the provided data."
+    )
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Delete a order",
+        description="Deletes an existing order by ID."
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
+
 
 class JourneyViewSet(viewsets.ModelViewSet):
     queryset = Journey.objects.all()
