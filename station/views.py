@@ -447,6 +447,49 @@ class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
+    @extend_schema(
+        summary="Get list of tickets",
+        description="Returns list of all tickets."
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Retrieve ticket details",
+        description="Returns details of a ticket by ID."
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(self, request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Create a new ticket",
+        description="Creates a new ticket."
+    )
+    def create(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Update a ticket",
+        description="Update a ticket by ID."
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(self, request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Partial update of a ticket",
+        description="Partially updates an existing ticket"
+                    "with the provided data."
+    )
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Delete a ticket",
+        description="Deletes an existing ticket by ID."
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
+
 
 class RouteViewSet(viewsets.ModelViewSet):
     queryset = Route.objects.all()
