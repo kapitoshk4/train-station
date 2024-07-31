@@ -69,7 +69,7 @@ class CrewViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary="Partial update of a crew member",
-        description="Partially updates an existing crew member "
+        description="Partially updates an existing crew member"
                     "with the provided data."
     )
     def partial_update(self, request, *args, **kwargs):
@@ -117,7 +117,7 @@ class StationViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary="Partial update of a station",
-        description="Partially updates an existing station "
+        description="Partially updates an existing station"
                     "with the provided data."
     )
     def partial_update(self, request, *args, **kwargs):
@@ -209,7 +209,7 @@ class TrainViewSet(viewsets.ModelViewSet):
 
     @extend_schema(
         summary="Partial update of a train",
-        description="Partially updates an existing train "
+        description="Partially updates an existing train"
                     "with the provided data."
     )
     def partial_update(self, request, *args, **kwargs):
@@ -226,6 +226,49 @@ class TrainViewSet(viewsets.ModelViewSet):
 class TrainTypeViewSet(viewsets.ModelViewSet):
     queryset = TrainType.objects.all()
     serializer_class = TrainTypeSerializer
+
+    @extend_schema(
+        summary="Get list of train types",
+        description="Returns list of all train types."
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Retrieve train type details",
+        description="Returns details of a train type by ID."
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(self, request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Create a new train type",
+        description="Creates a new train type."
+    )
+    def create(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Update a train type",
+        description="Update a train type by ID."
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(self, request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Partial update of a train type",
+        description="Partially updates an existing train type"
+                    "with the provided data."
+    )
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Delete a train type",
+        description="Deletes an existing train type by ID."
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
 
 
 class OrderSetPagination(PageNumberPagination):
