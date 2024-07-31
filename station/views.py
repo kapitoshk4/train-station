@@ -522,3 +522,58 @@ class RouteViewSet(viewsets.ModelViewSet):
             )
 
         return queryset
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "source",
+                type={"type": "string"},
+                description="Filter by source (ex. ?source=1,2)"
+            ),
+            OpenApiParameter(
+                "destination",
+                type={"type": "string"},
+                description="Filter by destination (ex. ?destination=1,2)"
+            )
+        ],
+        summary="Get list of routes",
+        description="Returns list of all routes."
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Retrieve route details",
+        description="Returns details of a route by ID."
+    )
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(self, request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Create a new route",
+        description="Creates a new route."
+    )
+    def create(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Update a route",
+        description="Update a route by ID."
+    )
+    def update(self, request, *args, **kwargs):
+        return super().update(self, request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Partial update of a route",
+        description="Partially updates an existing route"
+                    "with the provided data."
+    )
+    def partial_update(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
+
+    @extend_schema(
+        summary="Delete a route",
+        description="Deletes an existing route by ID."
+    )
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
