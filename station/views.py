@@ -58,7 +58,7 @@ class CrewViewSet(viewsets.ModelViewSet):
         description="Creates a new crew member."
     )
     def create(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
+        return super().create(request, *args, **kwargs)
 
     @extend_schema(
         summary="Update a crew member",
@@ -106,7 +106,7 @@ class StationViewSet(viewsets.ModelViewSet):
         description="Creates a new station."
     )
     def create(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
+        return super().create(request, *args, **kwargs)
 
     @extend_schema(
         summary="Update a station",
@@ -198,7 +198,7 @@ class TrainViewSet(viewsets.ModelViewSet):
         description="Creates a new train."
     )
     def create(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
+        return super().create(request, *args, **kwargs)
 
     @extend_schema(
         summary="Update a train",
@@ -246,7 +246,7 @@ class TrainTypeViewSet(viewsets.ModelViewSet):
         description="Creates a new train type."
     )
     def create(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
+        return super().create(request, *args, **kwargs)
 
     @extend_schema(
         summary="Update a train type",
@@ -320,7 +320,7 @@ class OrderViewSet(viewsets.ModelViewSet):
         description="Creates a new order."
     )
     def create(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
+        return super().create(request, *args, **kwargs)
 
     @extend_schema(
         summary="Update a order",
@@ -418,7 +418,7 @@ class JourneyViewSet(viewsets.ModelViewSet):
         description="Creates a new journey."
     )
     def create(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
+        return super().create(request, *args, **kwargs)
 
     @extend_schema(
         summary="Update a journey",
@@ -466,7 +466,7 @@ class TicketViewSet(viewsets.ModelViewSet):
         description="Creates a new ticket."
     )
     def create(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
+        return super().create(request, *args, **kwargs)
 
     @extend_schema(
         summary="Update a ticket",
@@ -554,7 +554,7 @@ class RouteViewSet(viewsets.ModelViewSet):
         description="Creates a new route."
     )
     def create(self, request, *args, **kwargs):
-        return super().retrieve(request, *args, **kwargs)
+        return super().create(request, *args, **kwargs)
 
     @extend_schema(
         summary="Update a route",
