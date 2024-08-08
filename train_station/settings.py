@@ -140,6 +140,8 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "station.permissions.IsAdminAllOrAuthenticatedReadOnly"
     ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 5
 }
 
 SPECTACULAR_SETTINGS = {
