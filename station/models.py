@@ -32,7 +32,10 @@ class Station(models.Model):
 
 class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return str(self.created_at)
@@ -68,8 +71,16 @@ class Train(models.Model):
 
 
 class Route(models.Model):
-    source = models.ForeignKey(Station, on_delete=models.CASCADE, related_name="source_routes")
-    destination = models.ForeignKey(Station, on_delete=models.CASCADE, related_name="destination_routes")
+    source = models.ForeignKey(
+        Station,
+        on_delete=models.CASCADE,
+        related_name="source_routes"
+    )
+    destination = models.ForeignKey(
+        Station,
+        on_delete=models.CASCADE,
+        related_name="destination_routes"
+    )
     distance = models.IntegerField()
 
     class Meta:
@@ -113,33 +124,51 @@ class Journey(models.Model):
         ]
 
     def __str__(self):
-        return f"Journey {self.route.destination.name} by {self.train.name}"
+        return (f"Journey from {self.route.source.name} "
+                f"to {self.route.destination.name} "
+                f"by {self.train.name}")
 
 
 class Ticket(models.Model):
     cargo = models.IntegerField()
     seat = models.IntegerField()
-    journey = models.ForeignKey(Journey, on_delete=models.CASCADE, related_name="tickets")
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="tickets")
+    journey = models.ForeignKey(
+        Journey,
+        on_delete=models.CASCADE,
+        related_name="tickets"
+    )
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name="tickets"
+    )
 
     class Meta:
         constraints = [
-            UniqueConstraint(fields=["cargo", "seat", "journey"], name="unique_ticket")
+            UniqueConstraint(
+                fields=["cargo", "seat", "journey"],
+                name="unique_ticket"
+            )
         ]
         ordering = ["cargo", "seat"]
 
     @staticmethod
-    def validate_ticket(seat: int, places_in_cargo: int, cargo: int, cargo_num: int):
+    def validate_ticket(seat: int,
+                        places_in_cargo: int,
+                        cargo: int,
+                        cargo_num: int):
         if not (1 <= seat <= places_in_cargo):
             raise ValidationError(
                 {
-                    "seat": f"Seat must be in range [1, {places_in_cargo}], not {seat}"
+                    "seat": f"Seat must be in range "
+                            f"[1, {places_in_cargo}], not {seat}"
                 }
             )
         if not (1 <= cargo <= cargo_num):
             raise ValidationError(
                 {
-                    "cargo": f"Cargo must be in range [1, {cargo_num}], not {cargo}"
+                    "cargo": f"Cargo must be in range "
+                             f"[1, {cargo_num}], not {cargo}"
                 }
             )
 
@@ -157,7 +186,12 @@ class Ticket(models.Model):
         update_fields=None
     ):
         self.full_clean()
-        return super(Ticket, self).save(force_insert, force_update, using, update_fields)
+        return super(Ticket, self).save(
+            force_insert,
+            force_update,
+            using,
+            update_fields
+        )
 
     def __str__(self):
         return f"cargo: {self.cargo}, seat: {self.seat}"
