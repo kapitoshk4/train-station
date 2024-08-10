@@ -1,7 +1,15 @@
 from django.db import transaction
 from rest_framework import serializers
 
-from station.models import Station, Crew, Journey, Route, Train, TrainType, Order, Ticket
+from station.models import (
+    Station,
+    Crew,
+    Journey,
+    Route,
+    Train,
+    TrainType,
+    Order,
+    Ticket)
 
 
 class StationSerializer(serializers.ModelSerializer):
@@ -35,7 +43,10 @@ class TrainImageSerializer(serializers.ModelSerializer):
 
 
 class TrainListSerializer(serializers.ModelSerializer):
-    train_type = serializers.CharField(source="train_type.name", read_only=True)
+    train_type = serializers.CharField(
+        source="train_type.name",
+        read_only=True
+    )
 
     class Meta:
         model = Train
@@ -61,7 +72,10 @@ class RouteSerializer(serializers.ModelSerializer):
 
 class RouteListSerializer(serializers.ModelSerializer):
     source = serializers.CharField(source="source.name", read_only=True)
-    destination = serializers.CharField(source="destination.name", read_only=True)
+    destination = serializers.CharField(
+        source="destination.name",
+        read_only=True
+    )
 
     class Meta:
         model = Route
@@ -76,13 +90,23 @@ class RouteRetrieveSerializer(RouteSerializer):
 class JourneySerializer(serializers.ModelSerializer):
     class Meta:
         model = Journey
-        fields = ("id", "route", "train", "departure_time", "arrival_time", "crew",)
+        fields = (
+            "id",
+            "route",
+            "train",
+            "departure_time",
+            "arrival_time",
+            "crew",
+        )
 
 
 class JourneyListSerializer(serializers.ModelSerializer):
     route = serializers.CharField(source="route.route", read_only=True)
     train_name = serializers.CharField(source="train.name", read_only=True)
-    train_num_cargo = serializers.CharField(source="train.cargo_num", read_only=True)
+    train_num_cargo = serializers.CharField(
+        source="train.cargo_num",
+        read_only=True
+    )
     crew = serializers.SlugRelatedField(
         many=True,
         read_only=True,
@@ -110,10 +134,20 @@ class JourneyRetrieveSerializer(JourneySerializer):
 
     class Meta:
         model = Journey
-        fields = ("id", "route", "train", "departure_time", "arrival_time", "crew", "taken_seats",)
+        fields = (
+            "id",
+            "route",
+            "train",
+            "departure_time",
+            "arrival_time",
+            "crew",
+            "taken_seats",
+        )
 
     def get_taken_seats(self, obj):
-        tickets = Ticket.objects.filter(journey=obj).values_list("cargo", "seat")
+        tickets = Ticket.objects.filter(journey=obj).values_list(
+            "cargo", "seat"
+        )
         taken_seats = {}
         for cargo, seat in tickets:
             if cargo not in taken_seats:
