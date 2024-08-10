@@ -1,6 +1,5 @@
 from django.db.models import Count, F
-from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema, OpenApiParameter, extend_schema_field
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
@@ -287,7 +286,10 @@ class OrderViewSet(viewsets.ModelViewSet):
         queryset = self.queryset.filter(user=self.request.user)
 
         if self.action == "list":
-            queryset = queryset.prefetch_related("tickets__journey__train", "tickets__journey__crew")
+            queryset = queryset.prefetch_related(
+                "tickets__journey__train",
+                "tickets__journey__crew"
+            )
 
         return queryset
 
@@ -374,7 +376,11 @@ class JourneyViewSet(viewsets.ModelViewSet):
             queryset = (
                 queryset
                 .select_related("route", "train")
-                .prefetch_related("crew", "route__destination", "route__source")
+                .prefetch_related(
+                    "crew",
+                    "route__destination",
+                    "route__source"
+                )
                 .annotate(
                     tickets_available=(
                             F("train__places_in_cargo")
@@ -387,7 +393,11 @@ class JourneyViewSet(viewsets.ModelViewSet):
             queryset = (
                 queryset
                 .select_related("route", "train")
-                .prefetch_related("crew", "route__destination", "route__source")
+                .prefetch_related(
+                    "crew",
+                    "route__destination",
+                    "route__source"
+                )
             )
 
         return queryset.distinct()
