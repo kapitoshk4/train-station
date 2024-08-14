@@ -4,3 +4,6 @@ README.md
 *.pyc
 .gitignore
 .idea
+docker-compose.yml
+.git
+.env
