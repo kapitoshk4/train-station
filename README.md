@@ -11,11 +11,9 @@ cd train_station
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-set POSTGRES_USER=<your db username>
-set POSTGRES_PASSWORD=<your db password>
-set POSTGRES_DB=<your db name>
-set POSTGRES_HOST=<your db hostname>
-set SECRET_KEY=<your secret key>
+```
+Copy .env.sample -> .env and populate with all required data
+```bash
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
@@ -29,7 +27,7 @@ docker-compose up
 docker-compose ps
 docker exec -it your_image_name sh
 - Create new admin user. `docker-compose run app sh -c "python manage.py createsuperuser`;
-- Run tests using different approach: `docker-compose run airport sh -c "python manage.py test"`;
+- Run tests using different approach: `docker-compose run station sh -c "python manage.py test"`;
 ```
 # Getting access
 
